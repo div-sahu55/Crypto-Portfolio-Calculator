@@ -1,3 +1,0 @@
-/home/divyansh/Projects/cpp/Crypto-Port-Calc/build/CMakeFiles/rebuild_cache.dir
-/home/divyansh/Projects/cpp/Crypto-Port-Calc/build/CMakeFiles/edit_cache.dir
-/home/divyansh/Projects/cpp/Crypto-Port-Calc/build/CMakeFiles/port-calc.dir

@@ -1,5 +1,5 @@
 # Crypto-Portfolio-Calculator
-A portfolio calculator for cryptocurrency and stocks investments written in C++
+A simple portfolio calculator for cryptocurrency and stocks investments written in C++
 <p></p>
 <h2>To Build</h2>
 
