@@ -5,6 +5,17 @@ class UserInvestInfo{
 	double CurrValue;
 	double PurchasedValue;
 	double Amt;
+	double avgBP;
 	public:
-	UserInvestInfo(); //default constructor
+	UserInvestInfo(){
+	}; //default constructor
+	void setCoinName(std::string name);
+	void setCurrValue(double d);
+	void setPurchasedValue(double d);
+	void setAmt(double d);
+	void CalcAvgBP();
+	double getAvgBP();
+	std::string getAdvice();
+	std::string getCname();
+	double getProfitPercent();
 };
