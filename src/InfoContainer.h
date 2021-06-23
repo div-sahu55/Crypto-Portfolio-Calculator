@@ -6,6 +6,7 @@ class UserInvestInfo{
 	double PurchasedValue;
 	double Amt;
 	double avgBP;
+	double TotalInv();
 	public:
 	UserInvestInfo(){
 	}; //default constructor
@@ -18,4 +19,6 @@ class UserInvestInfo{
 	std::string getAdvice();
 	std::string getCname();
 	double getProfitPercent();
+	double getPurchasedValue();
+	double getCurrentValue();
 };

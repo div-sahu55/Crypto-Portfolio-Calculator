@@ -21,10 +21,10 @@ double UserInvestInfo::getAvgBP(){
 std::string UserInvestInfo::getAdvice(){
 	std::string adv;
 	if(CurrValue<=avgBP){
-	adv= "Advised to buy more at a lower price or hold. If sold at current price, Loss% : " + std::to_string(getProfitPercent());
+	adv= "Advised to buy more at a lower price or hold. If sold at current price, Loss[%] : " + std::to_string(getProfitPercent());
 	}
 	else{
-	adv = "You can hold or sell this token at the current price. If sold at current price, Profit% : " + std::to_string(getProfitPercent());
+	adv = "You can hold or sell this token at the current price. If sold at current price, Profit[%] : " + std::to_string(getProfitPercent());
 	}
 	return adv;
 }
@@ -36,5 +36,10 @@ double UserInvestInfo::getProfitPercent(){
 std::string UserInvestInfo::getCname(){
 	return CoinName;
 }
-
+double UserInvestInfo::getPurchasedValue(){
+	return PurchasedValue;
+}
+double UserInvestInfo::getCurrentValue(){
+	return Amt*CurrValue;
+}
 

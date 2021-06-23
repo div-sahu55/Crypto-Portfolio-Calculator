@@ -13,6 +13,25 @@ void showHelp(){
 	std::cout<<" ->Make sure to keep all the currency related input in the same unit i.e USDT,INR (Just keep it uniform)\n";
 	std::cout<<std::endl;
 }
+void DispTotalInv(){
+	long double sum1=0,sum2=0;
+	if(cont.size()!=0){
+		for(UserInvestInfo e : cont){
+			sum1+=e.getPurchasedValue();
+			sum2+=e.getCurrentValue();
+		}
+	std::cout<<"\n\nTotal amount invested in this Portfolio: "<<sum1<<" ||  Current value of this Portfolio: "<<sum2;
+	long double diff = abs(sum1-sum2)/sum1;
+	if(sum2>=sum1){
+		std::cout<<"\n\nTotal profit: "<<abs(sum1-sum2)<<" and overall profit[%]: "<<diff*100<<"%";
+	}
+	else{
+		std::cout<<"\n\nTotal loss: "<<abs(sum1-sum2)<<" and overall loss[%]: "<<diff*100<<"%";
+	}
+	}
+}
+void PrintPort(){
+}
 void DisplayPort(){
 	system("clear");
 	std::cout<<"\n\nFor user: "<<uname<<", current portfolio analysis: \n";
@@ -22,9 +41,20 @@ void DisplayPort(){
                   std::cout<<std::endl;
                   std::cout<<"Coin/Stock Name: "<<e.getCname();
                   std::cout<<std::endl;
+		  std::cout<<"Your Average Buying price for "<<e.getCname()<<" is: "<<e.getAvgBP()<<std::endl;
                   std::cout<<e.getAdvice();
                   std::cout<<std::endl;
                 }
+	     DispTotalInv();
+	     std::cout<<"\n\n\nWould you like to save this information? (y/n): ";
+	     char ans;
+	     std::cin>>ans;
+	     if(ans=='Y' || ans=='y'){
+		     PrintPort();
+	     }
+	     else{
+		     system("clear");
+	     }
 	}
 	else{
 		std::cout<<"\n\nYour Portfolio has 0 entries. Please add some Entries first!";
@@ -34,6 +64,7 @@ void addEntry(){
 	std::string cname;
 	double currprice,amt,pvalue;
 	UserInvestInfo I;
+	system("clear");
 	std::cout<<"\n<------------NEW ENTRY----------->\n\n";
 	std::cout<<"Enter the name of Coin/Stock: ";
 	std::cin.ignore();
