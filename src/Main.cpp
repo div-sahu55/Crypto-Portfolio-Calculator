@@ -1,9 +1,13 @@
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
+#include <fstream>
 #include "conio.h" //custom conio funtion for getch() for linux
 #include "InfoContainer.h"
 std::vector<UserInvestInfo> cont;
 std::string uname;
+bool quit = false;
+int count=0;
+void DisplayPort();
 void showHelp(){
 	system("clear");
 	std::cout<<"<----------------------------------Help-------------------------------------->\n\n";
@@ -31,6 +35,56 @@ void DispTotalInv(){
 	}
 }
 void PrintPort(){
+	if(count>0){
+		 std::cout<<"\n\nInvalid Path. Please try again.\n";
+		 getch();
+	}
+	system("clear");
+	std::cout<<"<---------------------------Save Portfolio Data----------------------------->\n\n";
+	std::string f_path = "";
+	std::cout<<"Please enter the file path where you would like to save: ";
+	std::cin.clear();
+	std::cin.ignore(1);
+	std::getline(std::cin,f_path);
+	std::ofstream f_stream;
+	f_stream.open(f_path);
+	if(!f_stream){
+		count++;
+		PrintPort();
+	}
+	else{
+		f_stream<<"\nThis Portfolio belongs to: "<<uname<<" || Current Portfolio Analysis: \n";
+		f_stream<<"<--------------------------------------------------------------------------------------->";
+		      for(UserInvestInfo e : cont){
+                  f_stream<<std::endl;
+                  f_stream<<"Coin/Stock Name: "<<e.getCname();
+                  f_stream<<std::endl;
+                  f_stream<<"Your Average Buying price for "<<e.getCname()<<" is: "<<e.getAvgBP()<<std::endl;
+                  f_stream<<e.getAdvice();
+                  f_stream<<std::endl;
+		      }
+		    long double sum1=0,sum2=0;
+        if(cont.size()!=0){
+                for(UserInvestInfo e : cont){
+                        sum1+=e.getPurchasedValue();
+                        sum2+=e.getCurrentValue();
+                }
+        	f_stream<<"\n\nTotal amount invested in this Portfolio: "<<sum1<<" ||  Current value of this Portfolio: "<<sum2;
+        long double diff = abs(sum1-sum2)/sum1;
+        if(sum2>=sum1){
+                f_stream<<"\n\nTotal profit: "<<abs(sum1-sum2)<<" and overall profit[%]: "<<diff*100<<"%";
+        }
+        else{
+                f_stream<<"\n\nTotal loss: "<<abs(sum1-sum2)<<" and overall loss[%]: "<<diff*100<<"%";
+        }
+        }
+
+		std::cout<<"\nData successfully saved at: "<<f_path<<"\n\n";
+		std::cout<<"Press any key to continue.";
+		getch();
+		system("clear");
+	}
+	f_stream.close();
 }
 void DisplayPort(){
 	system("clear");
@@ -103,7 +157,6 @@ int main(){
 	std::cout<<"\nPlease enter your name: ";
 	std::getline(std::cin,uname);
 	std::cout<<std::endl;
-	bool quit = false;
 	while(!quit){
 	std::cout<<"1> Add a new entry\n";
 	std::cout<<"2> Show Current Portfolio Info\n";
