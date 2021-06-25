@@ -3,6 +3,7 @@
 #include <fstream>
 #include "conio.h" //custom conio funtion for getch() for linux
 #include "InfoContainer.h"
+//global variables
 std::vector<UserInvestInfo> cont;
 std::string uname;
 bool quit = false;
@@ -136,8 +137,6 @@ void addEntry(){
 	I.setAmt(amt);
 	I.CalcAvgBP();
 	cont.push_back(I);
-	//std::cout<<"\n"<<I.getAdvice();
-	//std::cout<<"\nYour Average Buying price is: "<<I.getAvgBP();
 	std::cout<<"\nWould You like to add more entries? (Y/N): ";
 	char ch;
 	std::cin>>ch;
@@ -167,6 +166,7 @@ int main(){
 	std::cout<<"Please enter your response: ";
 	std::cin>>ans;
 	if(ans==5){
+		system("clear");
 		quit=true;
 	}
 	else if(ans==1){
@@ -187,8 +187,8 @@ int main(){
 		std::cout<<"\nCleared current Portfolio. Please proceed to add new entries.\n\n";
 	}
 	else{
-		std::cout<<"Invalid Option. Please answer by selecting an appropriate number.\n";
-		showHelp();
+		std::cout<<"\nInvalid Option. Please answer by selecting an appropriate number.\n\n";
+		quit = true;
 	}
     }
 	getch();
