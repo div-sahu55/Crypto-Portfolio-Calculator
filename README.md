@@ -58,6 +58,7 @@ $ ./port-calc
 ```
 # Usage
 - Run the program and respond with the number against the menu option to proceed.
+<<<<<<< HEAD
 
 ![banner](./imgs/menu.png)
 
@@ -88,3 +89,5 @@ Check your portfolio analysis and respond with y/n whether you would like to sav
 - The recommendations for any token are based on general consensus and are NOT financial advices.
 
 - I will also be adding many more portfolio indicators like ror etc. with future updates so stay tuned :) 
+
+
