@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iomanip>
 #include "conio.h" //custom conio funtion for getch() for linux
+#include "version.h"
 #include "InfoContainer.h"
 //global variables
 std::vector<UserInvestInfo> cont;
@@ -27,11 +28,18 @@ void showHelp(){
 	std::cout<<"\t\t\t>>>Then enter the details asked about your investment\n\n";
 	std::cout<<"\t\t>>Answer with 2 for displaying details of the current portfolio.\n\n";
 	std::cout<<"\t\t>>Answer with 3 to clear all the entries in the portfolio.\n\n";
-	std::cout<<"\t\t>>Answer with 5 to quit\n\n";
+	std::cout<<"\t\t>>Answer with 4 to check current version.\n\n";
+	std::cout<<"\t\t>>Answer with 6 to quit\n\n";
 	std::cout<<" \t->Make sure to keep all the currency related input in the same unit i.e USDT,INR (Just keep it uniform)\n\n";
 	std::cout<<std::endl;
 	std::cout<<"\t Press any key to Continue.";
 	getch();
+}
+void showVersion(){
+		system("clear");
+		std::cout << "\n\tPortfolio-Calculator version: " << portcalc_VERSION_MAJOR << "." << portcalc_VERSION_MINOR  << "."<< portcalc_VERSION_REVISION << "\n";
+		std::cout << "\nPress any key to continue.";
+		getch();
 }
 void DisplayPort(){
 	system("clear");
@@ -48,7 +56,7 @@ void DisplayPort(){
 		  	    std::cout<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<< std::fixed << std::setprecision(2) << e.getAvgBP()<<"\n\n";
                 std::cout<<"\t\t>>";
 				e.getAdvice();
-                std::cout<<std::endl;
+                std::cout<< "%" <<std::endl;
                 }
 	     DispTotalInv();
 	     std::cout<<"\n\n\nWould you like to save this information? (y/n): ";
@@ -74,7 +82,7 @@ void DispTotalInv(){
 		}
 	long double diff = abs(sum1-sum2)/sum1;
 	std::cout<<"\n\n\t<----------------------------------------------------------------------------------------------------------------->";
-	std::cout<<"\n\n\tTotal amount invested in this Portfolio: "<< std::fixed << std::setprecision(2) << sum1<<" ||  Current value of this Portfolio: "<< std::setprecision(2) << sum2;
+	std::cout<<"\n\n\tTotal amount invested in this Portfolio: "<< std::fixed << std::setprecision(2) << sum1<<"  ||  Current value of this Portfolio: "<< std::setprecision(2) << sum2;
 	if(sum2>=sum1){
 		std::cout<<"\n\n\tTotal profit: " << std::fixed << std::setprecision(2) <<abs(sum1-sum2)<<" and overall profit[%]: "<< std::setprecision(2) <<diff*100<<"%";
 	}
@@ -114,13 +122,13 @@ void PrintPort(){        //function to write portfolio info in a text file
 		      for(UserInvestInfo e : cont){
                   f_stream<<std::endl;
                   f_stream<<"\t>Coin/Stock Name: "<<e.getCname()<<"\n\n";
-                  f_stream<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<<e.getAvgBP()<<"\n\n";
+                  f_stream<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<< std::fixed << std::setprecision(2) << e.getAvgBP()<<"\n\n";
                   f_stream<<"\t\t>>";
 				  if(e.ChkProfOrLoss()){
-					  f_stream<<"You can buy more at a lower price or hold. If sold at current price, Loss[%] : " << std::fixed << std::setprecision(2) << e.getProfitPercent();
+					  f_stream<<"You can buy more at a lower price or hold. If sold at current price, Loss[%] : " << std::fixed << std::setprecision(2) << e.getProfitPercent() << "%";
 				  }
 				  else{
-					  f_stream<<"You can hold or sell this token at the current price. If sold at current price, Profit[%] : " << std::fixed << std::setprecision(2)<< e.getProfitPercent();
+					  f_stream<<"You can hold or sell this token at the current price. If sold at current price, Profit[%] : " << std::fixed << std::setprecision(2)<< e.getProfitPercent() << "%";
 				  }
                   f_stream<<std::endl;
 		      }
@@ -131,7 +139,7 @@ void PrintPort(){        //function to write portfolio info in a text file
                         sum2+=e.getCurrentValue();
                 }
 			f_stream<<"\n\n\t<---------------------------------------------------------------------------------------------------------->";
-        	f_stream<<"\n\n\tTotal amount invested in this Portfolio: "<<sum1<<" || Current value of this Portfolio: "<<sum2;
+        	f_stream<<"\n\n\tTotal amount invested in this Portfolio: "<< std::fixed << std::setprecision(2) << sum1<<"  || Current value of this Portfolio: "<< std::fixed << std::setprecision(2) << sum2;
         long double diff = abs(sum1-sum2)/sum1;
         if(sum2>=sum1){
                 f_stream<<"\n\n\tTotal profit: "<< std::fixed<< std::setprecision(2) <<abs(sum1-sum2)<<" and overall profit[%]: "<<std::fixed<< std::setprecision(2) <<diff*100<<"%";
@@ -151,7 +159,7 @@ void PrintPort(){        //function to write portfolio info in a text file
 void addEntry(){ //function to add new token info
 	std::string cname;
 	char ch;
-	double currprice,amt,pvalue;
+	long double currprice,amt,pvalue;
 	if(flg){
 	 system("clear");
 	}
@@ -206,11 +214,12 @@ int main(){
 	std::cout<<"\t\t\t\t1> Add a new entry\n\n";
 	std::cout<<"\t\t\t\t2> Show Current Portfolio Info\n\n";
 	std::cout<<"\t\t\t\t3> Clear Current Portfolio\n\n";
-	std::cout<<"\t\t\t\t4> Help\n\n";
-	std::cout<<"\t\t\t\t5> Quit\n\n";
+	std::cout<<"\t\t\t\t4> Check Current Version\n\n";
+	std::cout<<"\t\t\t\t5> Help\n\n";
+	std::cout<<"\t\t\t\t6> Quit\n\n";
 	std::cout<<"\t>Please enter your response: ";
 	std::cin>>ans;
-	if(ans==5){
+	if(ans==6){
 		system("clear");
 		quit=true;
 	}
@@ -221,15 +230,20 @@ int main(){
 		DisplayPort();
 		std::cout<<"\n\n";
 	}
-	else if(ans==4){
-		std::cout<<std::endl;
-		showHelp();
-		getch();
-	}
 	else if(ans==3){
 		cont.clear(); //deleting all present entries
 		system("clear");
 		std::cout<<"\nCleared current Portfolio. Please proceed to add new entries.\n\n";
+	}
+	else if(ans==4){
+		showVersion();
+		getch();
+		system("clear");
+	}
+	else if(ans==5){
+		std::cout<<std::endl;
+		showHelp();
+		getch();
 	}
 	else{
 		std::cout<<"\nInvalid Option. Please answer by selecting an appropriate number.\n\n";

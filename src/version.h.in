@@ -1,0 +1,4 @@
+
+#define portcalc_VERSION_MAJOR @portcalc_VERSION_MAJOR@
+#define portcalc_VERSION_MINOR @portcalc_VERSION_MINOR@
+#define portcalc_VERSION_REVISION @portcalc_VERSION_REVISION@

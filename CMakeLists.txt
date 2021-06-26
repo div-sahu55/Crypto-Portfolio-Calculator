@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 3.10)
-
-project(Crypto-portfolio-calculator LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.13)
+project(port-calc LANGUAGES CXX)
+set(portcalc_VERSION_MAJOR 1)
+set(portcalc_VERSION_MINOR 0)
+set(portcalc_VERSION_REVISION 0)
 set(CMAKE_CXX_STANDARD 17)
-include_directories(${PROJECT_SRC_DIR}/src)
-add_executable(port-calc src/Main.cpp src/InfoContainer.cpp)
-target_include_directories(port-calc PUBLIC "${PROJECCT_BINARY_DIR}/src/")
-
+configure_file(${PROJECT_SOURCE_DIR}/src/version.h.in ${PROJECT_BINARY_DIR}/src/version.h)
+add_executable(port-calc ${PROJECT_SOURCE_DIR}/src/Main.cpp ${PROJECT_SOURCE_DIR}/src/InfoContainer.cpp)
+target_include_directories(port-calc PUBLIC "${PROJECT_BINARY_DIR}/src/")

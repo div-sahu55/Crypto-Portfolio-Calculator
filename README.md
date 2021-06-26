@@ -48,7 +48,7 @@ $ cmake -B build/
 ```
 - Compiling and generating an executable 
 ```
-$ cd build
+$ cd build/
 $ make
 ```
 # To Run

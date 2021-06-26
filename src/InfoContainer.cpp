@@ -1,7 +1,7 @@
 #include "InfoContainer.h"
 #include <iomanip>
 //method definitions:
-UserInvestInfo::UserInvestInfo(std::string cname,double currprice,double pvalue, double amt){
+UserInvestInfo::UserInvestInfo(std::string cname,long double currprice,long double pvalue, long double amt){
 	CoinName = cname;
 	CurrValue = currprice;
 	PurchasedValue = pvalue;
@@ -11,19 +11,19 @@ UserInvestInfo::UserInvestInfo(std::string cname,double currprice,double pvalue,
 void UserInvestInfo::setCoinName(std::string name){
 	CoinName = name;
 }
-void UserInvestInfo::setCurrValue(double d){
+void UserInvestInfo::setCurrValue(long double d){
 	CurrValue = d;
 }
-void UserInvestInfo::setAmt(double d){
+void UserInvestInfo::setAmt(long double d){
 	Amt = d;
 }
-void UserInvestInfo::setPurchasedValue(double d){
+void UserInvestInfo::setPurchasedValue(long double d){
 	PurchasedValue = d;
 }
 void UserInvestInfo::CalcAvgBP(){
 	avgBP=PurchasedValue/Amt;
 }
-double UserInvestInfo::getAvgBP(){
+long double UserInvestInfo::getAvgBP(){
 	return avgBP;
 }
 void UserInvestInfo::getAdvice(){
@@ -34,18 +34,18 @@ void UserInvestInfo::getAdvice(){
 	std::cout<<"You can hold or sell this token at the current price. If sold at current price, Profit[%] : " << std::fixed << std::setprecision(2)<< getProfitPercent();
 	}
 }
-double UserInvestInfo::getProfitPercent(){
-	double CP = Amt*CurrValue;
-	double p = abs(CP-PurchasedValue)/PurchasedValue;
+long double UserInvestInfo::getProfitPercent(){
+	long double CP = Amt*CurrValue;
+	long double p = abs(CP-PurchasedValue)/PurchasedValue;
 	return  p*100;
 }
 std::string UserInvestInfo::getCname(){
 	return CoinName;
 }
-double UserInvestInfo::getPurchasedValue(){
+long double UserInvestInfo::getPurchasedValue(){
 	return PurchasedValue;
 }
-double UserInvestInfo::getCurrentValue(){
+long double UserInvestInfo::getCurrentValue(){
 	return Amt*CurrValue;
 }
 bool UserInvestInfo::ChkProfOrLoss(){ 
