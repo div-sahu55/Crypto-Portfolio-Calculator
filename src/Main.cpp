@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <iomanip>
 #include "conio.h" //custom conio funtion for getch() for linux
 #include "InfoContainer.h"
 //global variables
@@ -44,8 +45,9 @@ void DisplayPort(){
              for(UserInvestInfo e : cont){
                 std::cout<<std::endl;
                 std::cout<<"\t>Coin/Stock Name: "<<e.getCname()<<"\n\n";
-		  	    std::cout<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<<e.getAvgBP()<<"\n\n";
-                std::cout<<"\t\t>>"<<e.getAdvice();
+		  	    std::cout<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<< std::fixed << std::setprecision(2) << e.getAvgBP()<<"\n\n";
+                std::cout<<"\t\t>>";
+				e.getAdvice();
                 std::cout<<std::endl;
                 }
 	     DispTotalInv();
@@ -72,12 +74,12 @@ void DispTotalInv(){
 		}
 	long double diff = abs(sum1-sum2)/sum1;
 	std::cout<<"\n\n\t<----------------------------------------------------------------------------------------------------------------->";
-	std::cout<<"\n\n\tTotal amount invested in this Portfolio: "<<sum1<<" ||  Current value of this Portfolio: "<<sum2;
+	std::cout<<"\n\n\tTotal amount invested in this Portfolio: "<< std::fixed << std::setprecision(2) << sum1<<" ||  Current value of this Portfolio: "<< std::setprecision(2) << sum2;
 	if(sum2>=sum1){
-		std::cout<<"\n\n\tTotal profit: "<<abs(sum1-sum2)<<" and overall profit[%]: "<<diff*100<<"%";
+		std::cout<<"\n\n\tTotal profit: " << std::fixed << std::setprecision(2) <<abs(sum1-sum2)<<" and overall profit[%]: "<< std::setprecision(2) <<diff*100<<"%";
 	}
 	else{
-		std::cout<<"\n\n\tTotal loss: "<<abs(sum1-sum2)<<" and overall loss[%]: "<<diff*100<<"%";
+		std::cout<<"\n\n\tTotal loss: "<< std::fixed << std::setprecision(2) << abs(sum1-sum2)<<" and overall loss[%]: "<< std::setprecision(2) << diff*100<<"%";
 	 }
 	}
 }
@@ -113,7 +115,13 @@ void PrintPort(){        //function to write portfolio info in a text file
                   f_stream<<std::endl;
                   f_stream<<"\t>Coin/Stock Name: "<<e.getCname()<<"\n\n";
                   f_stream<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<<e.getAvgBP()<<"\n\n";
-                  f_stream<<"\t\t>>"<<e.getAdvice();
+                  f_stream<<"\t\t>>";
+				  if(e.ChkProfOrLoss()){
+					  f_stream<<"You can buy more at a lower price or hold. If sold at current price, Loss[%] : " << std::fixed << std::setprecision(2) << e.getProfitPercent();
+				  }
+				  else{
+					  f_stream<<"You can hold or sell this token at the current price. If sold at current price, Profit[%] : " << std::fixed << std::setprecision(2)<< e.getProfitPercent();
+				  }
                   f_stream<<std::endl;
 		      }
 		    long double sum1=0,sum2=0;
@@ -123,13 +131,13 @@ void PrintPort(){        //function to write portfolio info in a text file
                         sum2+=e.getCurrentValue();
                 }
 			f_stream<<"\n\n\t<---------------------------------------------------------------------------------------------------------->";
-        	f_stream<<"\n\n\tTotal amount invested in this Portfolio: "<<sum1<<" ||  Current value of this Portfolio: "<<sum2;
+        	f_stream<<"\n\n\tTotal amount invested in this Portfolio: "<<sum1<<" || Current value of this Portfolio: "<<sum2;
         long double diff = abs(sum1-sum2)/sum1;
         if(sum2>=sum1){
-                f_stream<<"\n\n\tTotal profit: "<<abs(sum1-sum2)<<" and overall profit[%]: "<<diff*100<<"%";
+                f_stream<<"\n\n\tTotal profit: "<< std::fixed<< std::setprecision(2) <<abs(sum1-sum2)<<" and overall profit[%]: "<<std::fixed<< std::setprecision(2) <<diff*100<<"%";
         }
         else{
-                f_stream<<"\n\n\tTotal loss: "<<abs(sum1-sum2)<<" and overall loss[%]: "<<diff*100<<"%";
+                f_stream<<"\n\n\tTotal loss: "<< std::fixed<< std::setprecision(2) << (sum1-sum2)<<" and overall loss[%]: "<< std::fixed << std::setprecision(2) << diff*100<<"%";
         }
         }
 

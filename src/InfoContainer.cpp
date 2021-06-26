@@ -1,4 +1,5 @@
 #include "InfoContainer.h"
+#include <iomanip>
 //method definitions:
 UserInvestInfo::UserInvestInfo(std::string cname,double currprice,double pvalue, double amt){
 	CoinName = cname;
@@ -25,20 +26,18 @@ void UserInvestInfo::CalcAvgBP(){
 double UserInvestInfo::getAvgBP(){
 	return avgBP;
 }
-std::string UserInvestInfo::getAdvice(){
-	std::string adv;
+void UserInvestInfo::getAdvice(){
 	if(CurrValue<=avgBP){
-	adv= "Advised to buy more at a lower price or hold. If sold at current price, Loss[%] : " + std::to_string(getProfitPercent());
+	std::cout<<"You can buy more at a lower price or hold. If sold at current price, Loss[%] : " << std::fixed << std::setprecision(2) << getProfitPercent();
 	}
 	else{
-	adv = "You can hold or sell this token at the current price. If sold at current price, Profit[%] : " + std::to_string(getProfitPercent());
+	std::cout<<"You can hold or sell this token at the current price. If sold at current price, Profit[%] : " << std::fixed << std::setprecision(2)<< getProfitPercent();
 	}
-	return adv;
 }
 double UserInvestInfo::getProfitPercent(){
 	double CP = Amt*CurrValue;
 	double p = abs(CP-PurchasedValue)/PurchasedValue;
-	return p*100;
+	return  p*100;
 }
 std::string UserInvestInfo::getCname(){
 	return CoinName;
@@ -49,4 +48,9 @@ double UserInvestInfo::getPurchasedValue(){
 double UserInvestInfo::getCurrentValue(){
 	return Amt*CurrValue;
 }
-
+bool UserInvestInfo::ChkProfOrLoss(){ 
+	if(CurrValue<=avgBP){
+		return true;
+	}
+	return false;
+}
