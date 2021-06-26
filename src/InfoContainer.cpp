@@ -1,5 +1,12 @@
-#include<iostream>
 #include "InfoContainer.h"
+//method definitions:
+UserInvestInfo::UserInvestInfo(std::string cname,double currprice,double pvalue, double amt){
+	CoinName = cname;
+	CurrValue = currprice;
+	PurchasedValue = pvalue;
+	Amt = amt;
+	UserInvestInfo::CalcAvgBP();
+}
 void UserInvestInfo::setCoinName(std::string name){
 	CoinName = name;
 }

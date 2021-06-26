@@ -7,8 +7,13 @@
 std::vector<UserInvestInfo> cont;
 std::string uname;
 bool quit = false,flg=true;
-int count=0;
+int count=0,ans=0;
+//function declarations:
 void DisplayPort();
+void DispTotalInv();
+void PrintPort();
+void addEntry();
+//function definitions:
 void showHelp(){
 	system("clear");
 	std::cout<<std::endl;
@@ -27,6 +32,37 @@ void showHelp(){
 	std::cout<<"\t Press any key to Continue.";
 	getch();
 }
+void DisplayPort(){
+	system("clear");
+	std::cout<<std::endl;
+	for(int i=0;i<5;i++){
+		std::cout<<"\t";
+	}
+	std::cout<<"For user: "<<uname<<", current portfolio analysis: \n";
+	std::cout<<"\t\t\t\t<---------------------------------------------------------------->\n";
+	if(cont.size()!=0){
+             for(UserInvestInfo e : cont){
+                std::cout<<std::endl;
+                std::cout<<"\t>Coin/Stock Name: "<<e.getCname()<<"\n\n";
+		  	    std::cout<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<<e.getAvgBP()<<"\n\n";
+                std::cout<<"\t\t>>"<<e.getAdvice();
+                std::cout<<std::endl;
+                }
+	     DispTotalInv();
+	     std::cout<<"\n\n\nWould you like to save this information? (y/n): ";
+	     char ans;
+	     std::cin>>ans;
+	     if(ans=='Y' || ans=='y'){
+		     PrintPort();
+	     }
+	     else{
+		     system("clear");
+	     }
+	}
+	else{
+		std::cout<<"\n\n\t\tYour Portfolio has 0 entries. Please add some Entries first!";
+	}
+}
 void DispTotalInv(){
 	long double sum1=0,sum2=0;
 	if(cont.size()!=0){
@@ -34,18 +70,18 @@ void DispTotalInv(){
 			sum1+=e.getPurchasedValue();
 			sum2+=e.getCurrentValue();
 		}
+	long double diff = abs(sum1-sum2)/sum1;
 	std::cout<<"\n\n\t<----------------------------------------------------------------------------------------------------------------->";
 	std::cout<<"\n\n\tTotal amount invested in this Portfolio: "<<sum1<<" ||  Current value of this Portfolio: "<<sum2;
-	long double diff = abs(sum1-sum2)/sum1;
 	if(sum2>=sum1){
 		std::cout<<"\n\n\tTotal profit: "<<abs(sum1-sum2)<<" and overall profit[%]: "<<diff*100<<"%";
 	}
 	else{
 		std::cout<<"\n\n\tTotal loss: "<<abs(sum1-sum2)<<" and overall loss[%]: "<<diff*100<<"%";
-	}
+	 }
 	}
 }
-void PrintPort(){
+void PrintPort(){        //function to write portfolio info in a text file
 	if(count>0){
 		 std::cout<<"\n\nInvalid Path. Please try again.\n";
 		 getch();
@@ -104,41 +140,10 @@ void PrintPort(){
 	}
 	f_stream.close();
 }
-void DisplayPort(){
-	system("clear");
-	std::cout<<std::endl;
-	for(int i=0;i<5;i++){
-		std::cout<<"\t";
-	}
-	std::cout<<"For user: "<<uname<<", current portfolio analysis: \n";
-	std::cout<<"\t\t\t\t<---------------------------------------------------------------->\n";
-	if(cont.size()!=0){
-             for(UserInvestInfo e : cont){
-                std::cout<<std::endl;
-                std::cout<<"\t>Coin/Stock Name: "<<e.getCname()<<"\n\n";
-		  	    std::cout<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<<e.getAvgBP()<<"\n\n";
-                std::cout<<"\t\t>>"<<e.getAdvice();
-                std::cout<<std::endl;
-                }
-	     DispTotalInv();
-	     std::cout<<"\n\n\nWould you like to save this information? (y/n): ";
-	     char ans;
-	     std::cin>>ans;
-	     if(ans=='Y' || ans=='y'){
-		     PrintPort();
-	     }
-	     else{
-		     system("clear");
-	     }
-	}
-	else{
-		std::cout<<"\n\n\t\tYour Portfolio has 0 entries. Please add some Entries first!";
-	}
-}
-void addEntry(){
+void addEntry(){ //function to add new token info
 	std::string cname;
+	char ch;
 	double currprice,amt,pvalue;
-	UserInvestInfo I;
 	if(flg){
 	 system("clear");
 	}
@@ -160,14 +165,9 @@ void addEntry(){
 	std::cout<<"\t>Enter the current value of "<<cname<<": ";
 	std::cin>>currprice;
 	std::cout<<std::endl;
-	I.setCoinName(cname);
-	I.setCurrValue(currprice);
-	I.setPurchasedValue(pvalue);
-	I.setAmt(amt);
-	I.CalcAvgBP();
+	UserInvestInfo I(cname,currprice,pvalue,amt);
 	cont.push_back(I);
 	std::cout<<"\n\tWould You like to add more entries? (Y/N): ";
-	char ch;
 	std::cin>>ch;
 	if(ch=='Y' || ch=='y'){
 		flg=false;
@@ -193,14 +193,13 @@ int main(){
 	std::cout<<std::endl;
 	for(int i=0;i<5;i++){
 		std::cout<<"\t";
-	}
+	}//main menu display:
 	std::cout<<"<------------------------------------- Main Menu ------------------------------------->\n\n";
 	std::cout<<"\t\t\t\t1> Add a new entry\n\n";
 	std::cout<<"\t\t\t\t2> Show Current Portfolio Info\n\n";
 	std::cout<<"\t\t\t\t3> Clear Current Portfolio\n\n";
 	std::cout<<"\t\t\t\t4> Help\n\n";
 	std::cout<<"\t\t\t\t5> Quit\n\n";
-	int ans;
 	std::cout<<"\t>Please enter your response: ";
 	std::cin>>ans;
 	if(ans==5){
@@ -220,7 +219,7 @@ int main(){
 		getch();
 	}
 	else if(ans==3){
-		cont.clear();
+		cont.clear(); //deleting all present entries
 		system("clear");
 		std::cout<<"\nCleared current Portfolio. Please proceed to add new entries.\n\n";
 	}
@@ -228,6 +227,6 @@ int main(){
 		std::cout<<"\nInvalid Option. Please answer by selecting an appropriate number.\n\n";
 		quit = true;
 	}
-    }
+  }
 	getch();
 }
