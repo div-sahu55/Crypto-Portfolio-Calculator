@@ -11,6 +11,8 @@ std::string uname;
 bool quit = false,flg=true;
 int count=0,ans=0;
 //function declarations:
+void showHelp();
+void showVersion();
 void DisplayPort();
 void DispTotalInv();
 void PrintPort();
