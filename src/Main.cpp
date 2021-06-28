@@ -150,13 +150,13 @@ void PrintPort(){        //function to write portfolio info in a text file
                 f_stream<<"\n\n\tTotal loss: "<< std::fixed<< std::setprecision(2) << (sum1-sum2)<<" and overall loss[%]: "<< std::fixed << std::setprecision(2) << diff*100<<"%";
         }
         }
-
+		f_stream.close();
 		std::cout<<"\n      Data successfully saved at: "<<f_path<<"\n\n";
 		std::cout<<"        Press any key to continue.";
 		getch();
 		system("clear");
 	}
-	f_stream.close();
+
 }
 void addEntry(){ //function to add new token info
 	std::string cname;

@@ -4,7 +4,7 @@
 
 A Portfolio calculator for Cryptocurrencies and Stocks investments, written in C++
 
-It takes in investment information from the user and displays a detailed analysis of their portfolio using various quantification methods.
+It takes in investment information from the user and displays a detailed analysis of their portfolio that can be saved locally and thus help the user in keeping records of their portfolios.
 
 # Features
 
@@ -57,6 +57,7 @@ $ make
 $ ./port-calc
 ```
 # Usage
+
 - Run the program and respond with the number against the menu option to proceed.
 
 ![banner](./imgs/menu.png)
@@ -65,7 +66,7 @@ $ ./port-calc
 
 ![banner](./imgs/entry.png)
 
-Check your portfolio analysis and respond with y/n whether you would like to save the file or not.
+- Check your portfolio analysis and respond with y/n whether you would like to save the file or not.
 
 ![banner](./imgs/port-info.png)
 
@@ -77,6 +78,7 @@ Check your portfolio analysis and respond with y/n whether you would like to sav
 
 ![banner](./imgs/op-3.png)
 
+You can also checkout this video I made regarding usage - [https://youtu.be/IHnDor9emng](https://youtu.be/IHnDor9emng)
 # Comments
 
 - Build instructions for Windows OS will be added soon.
