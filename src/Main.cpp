@@ -2,22 +2,79 @@
 #include <vector>
 #include <fstream>
 #include <iomanip>
+#include <curl/curl.h>
 #include "conio.h" //custom conio funtion for getch() for linux
 #include "version.h"
 #include "InfoContainer.h"
 //global variables
 std::vector<UserInvestInfo> cont;
-std::string uname;
-bool quit = false,flg=true;
-int count=0,ans=0;
+std::string uname,currency=" dollars";
+bool quit = false,flg=true,chkCurr=true,menu=false;
+int count=0,ans=0,Curr=0;
+long double x =0;
 //function declarations:
 void showHelp();
-void showVersion();
+// void showVersion();
 void DisplayPort();
 void DispTotalInv();
 void PrintPort();
 void addEntry();
 //function definitions:
+size_t write_data(char *ptr, size_t size, size_t nmemb, void *userdata){
+    std::ostringstream *stream = (std::ostringstream*)userdata;
+    size_t count = size * nmemb;
+    stream->write(ptr, count);
+    return count;
+}
+void apiCall(std::string id){
+	menu=false;
+	CURL *curl = curl_easy_init();
+    std::ostringstream stream;
+	std::string get_curr="usd";
+	if(currency==" rupees"){
+		get_curr="inr";
+	}
+	std::string req_url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + get_curr + "&ids=" + id + "&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stream);
+	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
+	curl_easy_setopt(curl, CURLOPT_URL, req_url.c_str());
+	
+	CURLcode ret = curl_easy_perform(curl);
+	std::string output = stream.str();
+	std::string name = "current_price";
+	size_t found = output.find(name);
+	found+=15;
+	std::string str1;
+	while(output[found]!=','){
+		str1 += output[found++];
+	}
+	if(str1.length()<100){
+		str1+=currency;
+	std::cout<<"\n\t>Current Value of "<<id<<": "<<str1<<std::endl;
+	x = stold(str1);
+}
+	else{
+	std::cout<<"\tInvalid format for coin name.";
+	showHelp();
+	menu = true;
+	system("clear");
+	}
+}
+void getCurrency(){
+	system("clear");
+	for(int i=0;i<5;i++){
+	std::cout<<"\t";
+	}
+	std::cout<<"<-------------------------- PLEASE ENTER YOUR PREFFERED CURRENCY ---------------------> ";
+	std::cout<<"\n\n\t\t1> US Dollars (USD)";
+	std::cout<<"\n\t\t2> Indian National Rupee (INR)";
+	std::cout<<"\n\n\tPlease enter your response(1/2): ";
+	std::cin>>Curr;
+	if(Curr==2){
+		currency = " rupees";
+	}
+}
 void showHelp(){
 	system("clear");
 	std::cout<<std::endl;
@@ -55,7 +112,7 @@ void DisplayPort(){
              for(UserInvestInfo e : cont){
                 std::cout<<std::endl;
                 std::cout<<"\t>Coin/Stock Name: "<<e.getCname()<<"\n\n";
-		  	    std::cout<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<< std::fixed << std::setprecision(2) << e.getAvgBP()<<"\n\n";
+		  	    std::cout<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<< std::fixed << std::setprecision(2) << e.getAvgBP()<<currency<<"\n\n";
                 std::cout<<"\t\t>>";
 				e.getAdvice();
                 std::cout<< "%" <<std::endl;
@@ -84,12 +141,12 @@ void DispTotalInv(){
 		}
 	long double diff = abs(sum1-sum2)/sum1;
 	std::cout<<"\n\n\t<----------------------------------------------------------------------------------------------------------------->";
-	std::cout<<"\n\n\tTotal amount invested in this Portfolio: "<< std::fixed << std::setprecision(2) << sum1<<"  ||  Current value of this Portfolio: "<< std::setprecision(2) << sum2;
+	std::cout<<"\n\n\tTotal amount invested in this Portfolio: "<< std::fixed << std::setprecision(2) << sum1<<currency<<"  ||  Current value of this Portfolio: "<< std::setprecision(2) << sum2 <<currency;
 	if(sum2>=sum1){
-		std::cout<<"\n\n\tTotal profit: " << std::fixed << std::setprecision(2) <<abs(sum1-sum2)<<" and overall profit[%]: "<< std::setprecision(2) <<diff*100<<"%";
+		std::cout<<"\n\n\tTotal profit: " << std::fixed << std::setprecision(2) <<abs(sum1-sum2)<< currency << " and overall profit[%]: "<< std::setprecision(2) <<diff*100<<"%";
 	}
 	else{
-		std::cout<<"\n\n\tTotal loss: "<< std::fixed << std::setprecision(2) << abs(sum1-sum2)<<" and overall loss[%]: "<< std::setprecision(2) << diff*100<<"%";
+		std::cout<<"\n\n\tTotal loss: "<< std::fixed << std::setprecision(2) << abs(sum1-sum2)<< currency <<" and overall loss[%]: "<< std::setprecision(2) << diff*100<<"%";
 	 }
 	}
 }
@@ -124,7 +181,7 @@ void PrintPort(){        //function to write portfolio info in a text file
 		      for(UserInvestInfo e : cont){
                   f_stream<<std::endl;
                   f_stream<<"\t>Coin/Stock Name: "<<e.getCname()<<"\n\n";
-                  f_stream<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<< std::fixed << std::setprecision(2) << e.getAvgBP()<<"\n\n";
+                  f_stream<<"\t\t>>Your Average Buying price for "<<e.getCname()<<" is: "<< std::fixed << std::setprecision(2) << e.getAvgBP()<<currency<<"\n\n";
                   f_stream<<"\t\t>>";
 				  if(e.ChkProfOrLoss()){
 					  f_stream<<"You can buy more at a lower price or hold. If sold at current price, Loss[%] : " << std::fixed << std::setprecision(2) << e.getProfitPercent() << "%";
@@ -141,13 +198,13 @@ void PrintPort(){        //function to write portfolio info in a text file
                         sum2+=e.getCurrentValue();
                 }
 			f_stream<<"\n\n\t<---------------------------------------------------------------------------------------------------------->";
-        	f_stream<<"\n\n\tTotal amount invested in this Portfolio: "<< std::fixed << std::setprecision(2) << sum1<<"  || Current value of this Portfolio: "<< std::fixed << std::setprecision(2) << sum2;
+        	f_stream<<"\n\n\tTotal amount invested in this Portfolio: "<< std::fixed << std::setprecision(2) << sum1 << currency <<"  || Current value of this Portfolio: "<< std::fixed << std::setprecision(2) << sum2 << currency;
         long double diff = abs(sum1-sum2)/sum1;
         if(sum2>=sum1){
-                f_stream<<"\n\n\tTotal profit: "<< std::fixed<< std::setprecision(2) <<abs(sum1-sum2)<<" and overall profit[%]: "<<std::fixed<< std::setprecision(2) <<diff*100<<"%";
+                f_stream<<"\n\n\tTotal profit: "<< std::fixed<< std::setprecision(2) << abs(sum1-sum2) << currency <<" and overall profit[%]: "<<std::fixed<< std::setprecision(2) <<diff*100<<"%";
         }
         else{
-                f_stream<<"\n\n\tTotal loss: "<< std::fixed<< std::setprecision(2) << (sum1-sum2)<<" and overall loss[%]: "<< std::fixed << std::setprecision(2) << diff*100<<"%";
+                f_stream<<"\n\n\tTotal loss: "<< std::fixed<< std::setprecision(2) << abs(sum1-sum2)<< currency << " and overall loss[%]: "<< std::fixed << std::setprecision(2) << diff*100<<"%";
         }
         }
 		f_stream.close();
@@ -159,6 +216,10 @@ void PrintPort(){        //function to write portfolio info in a text file
 
 }
 void addEntry(){ //function to add new token info
+	if(chkCurr){
+		getCurrency();
+	}
+	chkCurr=false;
 	std::string cname;
 	char ch;
 	long double currprice,amt,pvalue;
@@ -173,17 +234,18 @@ void addEntry(){ //function to add new token info
 	std::cout<<"\t>Enter the name of Coin/Stock: ";
 	std::cin.ignore();
 	std::getline(std::cin,cname);
+	apiCall(cname);
+	if(menu){
+	   return;
+	}
 	std::cout<<std::endl;
 	std::cout<<"\t>Enter the quantity of "<<cname<<" purchased: ";
 	std::cin>>amt;
 	std::cout<<std::endl;
-	std::cout<<"\t>Enter the total amount invested in "<<cname<<": ";
+	std::cout<<"\t>Enter the total amount invested in "<<cname<<" in"<<currency<<": ";
 	std::cin>>pvalue;
 	std::cout<<std::endl;
-	std::cout<<"\t>Enter the current value of "<<cname<<": ";
-	std::cin>>currprice;
-	std::cout<<std::endl;
-	UserInvestInfo I(cname,currprice,pvalue,amt);
+	UserInvestInfo I(cname,x,pvalue,amt,currency);
 	cont.push_back(I);
 	std::cout<<"\n\tWould You like to add more entries? (Y/N): ";
 	std::cin>>ch;
@@ -226,6 +288,7 @@ int main(){
 		quit=true;
 	}
 	else if(ans==1){
+		chkCurr=true;
 		addEntry();
 	}
 	else if(ans==2){

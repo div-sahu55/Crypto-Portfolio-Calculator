@@ -1,9 +1,10 @@
 #include "InfoContainer.h"
 #include <iomanip>
 //method definitions:
-UserInvestInfo::UserInvestInfo(std::string cname,long double currprice,long double pvalue, long double amt){
+UserInvestInfo::UserInvestInfo(std::string cname,long double currValue,long double pvalue, long double amt, std::string curr){
 	CoinName = cname;
-	CurrValue = currprice;
+	currency = curr;
+	CurrValue = currValue;
 	PurchasedValue = pvalue;
 	Amt = amt;
 	UserInvestInfo::CalcAvgBP();

@@ -1,7 +1,7 @@
 #include <iostream>
 class UserInvestInfo{
 	private:
-		std::string CoinName;
+		std::string CoinName,currency;
 		long double CurrValue;
 		long double PurchasedValue;
 		long double Amt;
@@ -9,7 +9,7 @@ class UserInvestInfo{
 	public:
 		UserInvestInfo(){
 		}; //default constructor
-		UserInvestInfo(std::string cname, long double currprice, long double pvalue, long double amt); //parameterized constructor for initializing values
+		UserInvestInfo(std::string cname,long double currValue, long double pvalue, long double amt, std::string curr); //parameterized constructor for initializing values
 		void CalcAvgBP();
 		bool ChkProfOrLoss(); //boolean function to check whether current token is in profit or loss
 		//mutators:
