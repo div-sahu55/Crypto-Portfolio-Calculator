@@ -9,7 +9,7 @@
 //global variables
 std::vector<UserInvestInfo> cont;
 std::string uname,currency=" dollars";
-bool quit = false,flg=true,chkCurr=true,menu=false;
+bool quit = false,flg=true,chkCurr=true,menu=false,currUnkown=false;
 int count=0,ans=0,Curr=0;
 long double x =0;
 //function declarations:
@@ -20,6 +20,12 @@ void DispTotalInv();
 void PrintPort();
 void addEntry();
 //function definitions:
+void showVersion(){
+	system("clear");
+	std::cout << "\n\tPortfolio-Calculator version: " << portcalc_VERSION_MAJOR << "." << portcalc_VERSION_MINOR  << "."<< portcalc_VERSION_REVISION << "\n";
+	std::cout << "\nPress any key to continue.";
+	getch();
+}
 size_t write_data(char *ptr, size_t size, size_t nmemb, void *userdata){
     std::ostringstream *stream = (std::ostringstream*)userdata;
     size_t count = size * nmemb;
@@ -51,54 +57,65 @@ void apiCall(std::string id){
 	}
 	if(str1.length()<100){
 		str1+=currency;
-	std::cout<<"\n\t>Current Value of "<<id<<": "<<str1<<std::endl;
+	std::cout<<"\n\t>Current price of "<<id<<": "<<str1<<std::endl;
 	x = stold(str1);
 }
 	else{
-	std::cout<<"\tInvalid format for coin name.";
-	showHelp();
+	std::cout<<"\n\n\tInvalid format for coin name.\n\n";
 	menu = true;
+	showHelp();
 	system("clear");
 	}
 }
 void getCurrency(){
+	if(!currUnkown){
 	system("clear");
+	}
 	for(int i=0;i<5;i++){
 	std::cout<<"\t";
 	}
 	std::cout<<"<-------------------------- PLEASE ENTER YOUR PREFFERED CURRENCY ---------------------> ";
 	std::cout<<"\n\n\t\t1> US Dollars (USD)";
 	std::cout<<"\n\t\t2> Indian National Rupee (INR)";
-	std::cout<<"\n\n\tPlease enter your response(1/2): ";
+	std::cout<<"\n\n\tPlease enter your response (1/2): ";
 	std::cin>>Curr;
 	if(Curr==2){
 		currency = " rupees";
 	}
+	else if(Curr==1){
+		currency = currency;
+	}
+	else{
+		std::cout<<"\n\n\tInvalid Option.\n\n";
+		currUnkown=true;
+		getCurrency();
+	}
 }
 void showHelp(){
+	if(!menu){
 	system("clear");
+	}
 	std::cout<<std::endl;
 	for(int i=0;i<5;i++){
 		std::cout<<"\t";
 	}
 	std::cout<<"<---------------------------------- Help -------------------------------------->\n\n";
-	std::cout<<"\t->Navigate through the menu and select appropriate options\n\n";
+	std::cout<<"\t->Navigate through the menu and select appropriate options. In the main menu,\n\n";
 	std::cout<<"\t\t>>Answer with 1 in the menu to add an entry\n\n";
-	std::cout<<"\t\t\t>>>Then enter the details asked about your investment\n\n";
 	std::cout<<"\t\t>>Answer with 2 for displaying details of the current portfolio.\n\n";
 	std::cout<<"\t\t>>Answer with 3 to clear all the entries in the portfolio.\n\n";
 	std::cout<<"\t\t>>Answer with 4 to check current version.\n\n";
 	std::cout<<"\t\t>>Answer with 6 to quit\n\n";
-	std::cout<<" \t->Make sure to keep all the currency related input in the same unit i.e USDT,INR (Just keep it uniform)\n\n";
+	std::cout<<"\t->Select your prefered currency from the list.\n\n";
+	std::cout<<"\t\t>>Answer with 1 for us dollars and 2 for indian rupee.\n\n";
+	std::cout<<"\t->For adding the new entry, you MUST follow the correct name format i.e\n\n";
+	std::cout<<"\t\t>>The coin name should be in lower-case.\n\n";
+	std::cout<<"\t\t>>If there is space between two words of a coin name, then replace that space with a - (minus sign)\n\n";
+	std::cout<<"\t\t>>For instance, 'Bitcoin' will be written as : bitcoin and  'Ethereum Classic' as : ethereum-classic\n\n";
+	std::cout<<"\t\t>>After entering the name, please wait while the current price of the coin is loaded.\n\n";
 	std::cout<<std::endl;
 	std::cout<<"\t Press any key to Continue.";
 	getch();
-}
-void showVersion(){
-		system("clear");
-		std::cout << "\n\tPortfolio-Calculator version: " << portcalc_VERSION_MAJOR << "." << portcalc_VERSION_MINOR  << "."<< portcalc_VERSION_REVISION << "\n";
-		std::cout << "\nPress any key to continue.";
-		getch();
 }
 void DisplayPort(){
 	system("clear");
