@@ -2,7 +2,7 @@
 ![banner](./imgs/head_banner.png)
 # About
 
-A Portfolio calculator for Cryptocurrencies and Stocks investments, written in C++
+A Portfolio calculator for Cryptocurrency investments, written in C++
 
 It takes in investment information from the user and displays a detailed analysis of their portfolio that can be saved locally and thus help the user in keeping records of their portfolios.
 
@@ -14,7 +14,12 @@ It takes in investment information from the user and displays a detailed analysi
 
 - The portfolio analysis can be saved locally in a path-specified text file.
 
+# API Used
+
+[CoinGecko API V3](https://www.coingecko.com/api/documentations/v3) - For getting the current prices of the coins.
 # Installing Dependencies
+
+## CMake
 
  It uses CMake to build the program so it needs to be installed on the system.
 
@@ -32,6 +37,39 @@ sudo apt-get install cmake
 ```
 sudo dnf install cmake
 ```
+
+## libcurl
+
+This program uses libcurl for making an api call, libcurl is a free and easy-to-use client-side URL transfer library. It is highly portable, it builds and works identically on numerous platforms
+
+To know more about libcurl, please refer: 
+[https://curl.se/libcurl/](https://curl.se/libcurl/)
+
+- Run update command to update package repositories and get latest package information.
+```
+sudo apt-get update -y
+```
+- Run the install command with -y flag to quickly install the packages and dependencies.
+
+
+```
+sudo apt-get install -y libcurl-dev
+```
+
+- Then explicitly install one of the packages.
+
+```
+sudo apt-get install <package-name>
+```
+
+<h2>or</h2>
+ 
+ - For Ubuntu
+
+```
+sudo apt-get install libcurl4-openssl-dev
+```
+
 # Build Instructions
 
 - Cloning this repository
@@ -68,7 +106,7 @@ $ ./port-calc
 
 - Check your portfolio analysis and respond with y/n whether you would like to save the file or not.
 
-![banner](./imgs/port-info.png)
+![banner](./imgs/port.png)
 
 - If responded with y for saving the file, enter the file path where you'd like to save this portfolio data.
 
@@ -80,12 +118,6 @@ $ ./port-calc
 
 You can also checkout this video I made regarding usage - [https://youtu.be/IHnDor9emng](https://youtu.be/IHnDor9emng)
 # Comments
-
-- Build instructions for Windows OS will be added soon.
-
-- I designed this program with cryptocurrencies in mind but it can very well be used for stocks.
-
-- Presently, I am inputting the current price of the tokens from the user. I understand how inconvenient this is and will automate this with updates in the future.
 
 - The recommendations for any token are based on general consensus and are NOT financial advices.
 
